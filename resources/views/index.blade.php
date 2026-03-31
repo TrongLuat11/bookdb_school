@@ -3,6 +3,8 @@
         Sách
     </x-slot>
 
+    <div id="book-content">
+        @include('partials.book_grid')
     <div class='list-book'>
         @foreach($data as $row)
             <div class='book'>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BookController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LayoutController;
 use Illuminate\Support\Facades\Route;
@@ -11,6 +12,10 @@ Route::get('/', function () {
 Route::get('/sach', [LayoutController::class, 'sach']);
 Route::get('/sach/theloai/{id}', [LayoutController::class, 'theloai']);
 Route::get('sach/chitiet/{id}', [LayoutController::class, 'chitietsach']);
+Route::get('/order', [BookController::class, 'order'])->name('order');
+Route::post('/cart/add', [BookController::class, 'cartadd'])->name('cartadd');
+Route::post('/cart/delete', [BookController::class, 'cartdelete'])->name('cartdelete');
+Route::post('/order/create', [BookController::class, 'ordercreate'])->middleware('auth')->name('ordercreate');
 
 
 Route::get('/dashboard', function () {

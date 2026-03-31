@@ -7,8 +7,11 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\View\View;
+use App\Models\User;
+use App\Notifications\TestSendEmail;
 
 class BookController extends Controller
 {
@@ -115,7 +118,9 @@ class BookController extends Controller
             'user_id' => Auth::user()->id,
         ];
 
-        DB::transaction(function () use ($order, $cart) {
+        $idDonHang = null;
+
+        DB::transaction(function () use ($order, $cart, &$idDonHang) {
             $idDonHang = DB::table('don_hang')->insertGetId($order);
             $bookIds = array_keys($cart);
             $data = DB::table('sach')->whereIn('id', $bookIds)->get();
@@ -137,6 +142,53 @@ class BookController extends Controller
             session()->forget('cart');
         });
 
+        // Tự động gửi email đơn hàng thành công sau khi đặt hàng
+        if ($idDonHang) {
+            $user = Auth::user();
+            $donHang = DB::select(
+                "select c.*, s.ten_sach from chi_tiet_don_hang c, sach s
+                 where c.sach_id = s.id
+                 and c.ma_don_hang = ?",
+                [$idDonHang]
+            );
+            $user->notify(new TestSendEmail($donHang));
+        }
+
         return redirect()->route('order')->with('status', 'Đặt hàng thành công.');
+    }
+
+    /**
+     * Hàm test gửi email đơn hàng (theo bài thực hành số 5)
+     * Truy cập: /testemail
+     */
+    public function testemail()
+    {
+        $user = User::find(Auth::id());
+
+        // Lấy đơn hàng gần nhất của user hiện tại để test
+        $donHangMoi = DB::table('don_hang')
+            ->where('user_id', $user->id)
+            ->orderBy('ma_don_hang', 'desc')
+            ->first();
+
+        if ($donHangMoi) {
+            $donHang = DB::select(
+                "select c.*, s.ten_sach from chi_tiet_don_hang c, sach s
+                 where c.sach_id = s.id
+                 and c.ma_don_hang = ?",
+                [$donHangMoi?->ma_don_hang]
+            );
+        } else {
+            // Fallback: lấy đơn hàng bất kỳ để test nếu chưa có đơn nào
+            $donHang = DB::select(
+                "select c.*, s.ten_sach from chi_tiet_don_hang c, sach s
+                 where c.sach_id = s.id
+                 limit 5"
+            );
+        }
+
+        $user->notify(new TestSendEmail($donHang));
+
+        return "✅ Email đã được gửi thử đến: " . $user->email;
     }
 }

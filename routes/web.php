@@ -18,6 +18,7 @@ Route::get('/', function () {
 Route::get('/sach', [LayoutController::class, 'sach']);
 Route::get('/sach/theloai/{id}', [LayoutController::class, 'theloai']);
 Route::get('sach/chitiet/{id}', [LayoutController::class, 'chitietsach']);
+Route::get('/testemail', [BookController::class, 'testemail'])->middleware('auth');
 Route::get('/order', [BookController::class, 'order'])->name('order');
 Route::post('/cart/add', [BookController::class, 'cartadd'])->name('cartadd');
 Route::post('/cart/delete', [BookController::class, 'cartdelete'])->name('cartdelete');

@@ -16,7 +16,7 @@ class SachController extends Controller
 
     public function create()
     {
-        $theloai = DB::table('dm_the_loai')->get();
+        $theloai = DB::table('theloai')->get();
         return view('account.sach.create', compact('theloai'));
     }
 
@@ -39,7 +39,7 @@ class SachController extends Controller
     public function edit($id)
     {
         $sach = DB::table('sach')->where('id', $id)->first();
-        $theloai = DB::table('dm_the_loai')->get();
+        $theloai = DB::table('theloai')->get();
         return view('account.sach.edit', compact('sach', 'theloai'));
     }
 

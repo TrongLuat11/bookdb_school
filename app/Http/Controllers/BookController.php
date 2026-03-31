@@ -146,7 +146,7 @@ class BookController extends Controller
         if ($idDonHang) {
             $user = Auth::user();
             $donHang = DB::select(
-                "select c.*, s.ten_sach from chi_tiet_don_hang c, sach s
+                "select c.*, s.tieu_de from chi_tiet_don_hang c, sach s
                  where c.sach_id = s.id
                  and c.ma_don_hang = ?",
                 [$idDonHang]
@@ -173,7 +173,7 @@ class BookController extends Controller
 
         if ($donHangMoi) {
             $donHang = DB::select(
-                "select c.*, s.ten_sach from chi_tiet_don_hang c, sach s
+                "select c.*, s.tieu_de from chi_tiet_don_hang c, sach s
                  where c.sach_id = s.id
                  and c.ma_don_hang = ?",
                 [$donHangMoi?->ma_don_hang]
@@ -181,7 +181,7 @@ class BookController extends Controller
         } else {
             // Fallback: lấy đơn hàng bất kỳ để test nếu chưa có đơn nào
             $donHang = DB::select(
-                "select c.*, s.ten_sach from chi_tiet_don_hang c, sach s
+                "select c.*, s.tieu_de from chi_tiet_don_hang c, sach s
                  where c.sach_id = s.id
                  limit 5"
             );

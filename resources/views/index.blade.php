@@ -5,31 +5,14 @@
 
     <div id="book-content">
         @include('partials.book_grid')
-    <div class='list-book'>
-        @foreach($data as $row)
-            <div class='book'>
-                <a href="{{url('sach/chitiet/'.$row->id)}}">
-                    <img src="{{ asset('hinh/image/'.$row->file_anh_bia) }}" width='200px' height='200px'>
-                    <br>
-                    <b>{{ $row->tieu_de }}</b>
-                    <br>
-                    <i>{{ number_format($row->gia_ban, 0, ",", ".") }}đ</i>
-                </a>
-
-                <div class='btn-add-product mt-2'>
-                    <button class='btn btn-success btn-sm mb-1 add-product' book_id="{{$row->id}}">
-                        Thêm vào giỏ hàng
-                    </button>
-                </div>
-            </div>
-        @endforeach
     </div>
 
     <script>
         $(document).ready(function () {
-            $(".add-product").click(function () {
-                id = $(this).attr("book_id");
-                num = 1;
+            // Sử dụng $(document).on() để bắt sự kiện click cho cả các thẻ sách được tải mới qua AJAX
+            $(document).on("click", ".btn-add-to-cart", function () {
+                var id = $(this).attr("data-sach-id");
+                var num = $(this).closest('.book').find('.book-qty').val() || 1;
 
                 $.ajax({
                     type: "POST",
@@ -41,17 +24,28 @@
                         "num": num
                     },
                     beforeSend: function () {
+                        // Có thể thêm loading spinner ở đây
                     },
                     success: function (data) {
+                        // Cập nhật số lượng giỏ hàng trên badge
                         $("#cart-number-product").html(data);
-                    },
+                        
+                        // Hiển thị thông báo nhỏ
+                        var btn = $(this);
+                        var originalText = btn.text();
+                        btn.text("Đã thêm!");
+                        btn.removeClass("btn-danger").addClass("btn-success");
+                        setTimeout(function(){
+                            btn.text(originalText);
+                            btn.removeClass("btn-success").addClass("btn-danger");
+                        }, 1500);
+                        
+                    }.bind(this), // bind this để sử dụng $(this) trong callback
                     error: function (xhr, status, error) {
-                    },
-                    complete: function (xhr, status) {
+                        console.error('Lỗi thêm giỏ hàng:', error);
                     }
                 });
             });
         });
     </script>
 </x-booklayout>
-

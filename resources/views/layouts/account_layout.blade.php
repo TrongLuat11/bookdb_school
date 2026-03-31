@@ -64,6 +64,7 @@
             <div class="col-2 sidebar">
                 <a href="{{ route('account') }}" class="{{ request()->routeIs('account') ? 'active' : '' }}">Thông tin tài khoản</a>
                 <a href="{{ route('sach.index') }}" class="{{ request()->routeIs('sach.*') ? 'active' : '' }}">Quản lý sách</a>
+                <a href="{{ route('quan-ly-the-loai.index') }}" class="{{ request()->routeIs('quan-ly-the-loai.*') ? 'active' : '' }}">Quản lý thể loại</a>
             </div>
 
             {{-- Main content --}}

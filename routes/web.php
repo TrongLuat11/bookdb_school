@@ -3,10 +3,15 @@
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LayoutController;
+use App\Http\Controllers\AccountController;
+use App\Http\Controllers\SachController;
+
 use Illuminate\Support\Facades\Route;
 
+
+
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/sach');
 });
 
 Route::get('/sach', [LayoutController::class, 'sach']);
@@ -23,9 +28,16 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/account', [AccountController::class, 'index'])->name('account');
+    Route::post('/account/saveinfo', [AccountController::class, 'saveaccountinfo'])->name('saveinfo');
+
+    // Quản lý sách
+    Route::get('/account/sach', [SachController::class, 'index'])->name('sach.index');
+    Route::get('/account/sach/create', [SachController::class, 'create'])->name('sach.create');
+    Route::post('/account/sach', [SachController::class, 'store'])->name('sach.store');
+    Route::get('/account/sach/{id}/edit', [SachController::class, 'edit'])->name('sach.edit');
+    Route::post('/account/sach/{id}/update', [SachController::class, 'update'])->name('sach.update');
+    Route::delete('/account/sach/{id}', [SachController::class, 'destroy'])->name('sach.delete');
 });
 
 require __DIR__.'/auth.php';

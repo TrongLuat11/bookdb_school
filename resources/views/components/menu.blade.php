@@ -1,5 +1,10 @@
 <nav class="navbar navbar-light">
-    <ul class="navbar-nav">
-        {{$item}}
-    </ul>
+    <div class="menu-wrap">
+        <ul class="navbar-nav">
+            {{$item}}
+        </ul>
+        @isset($cart)
+            {{ $cart }}
+        @endisset
+    </div>
 </nav>  

@@ -4,6 +4,24 @@
     <title>{{$title}}</title>
     <!-- CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <style>
+    .site-header {
+        padding: 12px 0 4px;
+    }
+        .header-inner {
+        width:1000px;
+        margin:0 auto;
+        position:relative;
+        }
+        .header-banner {
+        width:1000px;
+        display:block;
+        }
+    .navbar {
+        background-color: #ff5850;
+        font-weight:bold;
     
     <!-- JS files for Bootstrap dropdown to work -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -14,6 +32,12 @@
         .navbar {
             background-color: #ff5850;
             font-weight: bold;
+        }
+        .menu-wrap {
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        width:100%;
         }
         .nav-item a {
             color: #fff!important;
@@ -26,6 +50,71 @@
             margin-top: 15px;
         }
         .book {
+        position:relative;
+        margin:10px;
+        text-align:center;
+        padding-bottom:35px;
+        }
+        .btn-add-product
+        {
+        position:absolute;
+        bottom:0;
+        width:100%;
+        }
+        .cart-shortcut {
+        position:absolute;
+        top:18px;
+        right:18px;
+        min-width:170px;
+        display:flex;
+        align-items:center;
+        gap:12px;
+        padding:12px 14px;
+        color:#2f2a1f;
+        background:rgba(255, 255, 255, 0.95);
+        border-radius:18px;
+        box-shadow:0 10px 24px rgba(0, 0, 0, 0.14);
+        text-decoration:none !important;
+        }
+        .cart-shortcut:hover {
+        color:#2f2a1f;
+        transform:translateY(-1px);
+        transition:all .2s ease;
+        }
+        .cart-icon-wrap {
+        width:42px;
+        height:42px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        color:#fff;
+        background:#ff6b57;
+        border-radius:14px;
+        }
+        .cart-copy {
+        line-height:1.1;
+        }
+        .cart-copy small {
+        display:block;
+        color:#8a7f6d;
+        font-size:12px;
+        }
+        .cart-copy strong {
+        display:block;
+        font-size:15px;
+        }
+        .cart-badge {
+        min-width:24px;
+        height:24px;
+        padding:0 6px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        color:#fff;
+        background:#23b85c;
+        border-radius:999px;
+        font-size:12px;
+        font-weight:bold;
             margin: 10px;
             text-align: center;
         }
@@ -42,6 +131,27 @@
     </style>
 </head>
 
+<body>
+    <header class="site-header">
+        <div class="header-inner">
+            <img src="{{ asset('hinh/banner_sach.jpg') }}" class="header-banner">
+            <a href="{{ route('order') }}" class="cart-shortcut">
+                <span class="cart-icon-wrap">
+                    <i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>
+                </span>
+                <span class="cart-copy">
+                    <small>Giỏ hàng của bạn</small>
+                    <strong>Xem đơn hàng</strong>
+                </span>
+                <span class="cart-badge" id="cart-number-product">
+                    @if (session('cart'))
+                        {{ count(session('cart')) }}
+                    @else
+                        0
+                    @endif
+                </span>
+            </a>
+        </div>
 <body style="background-color: #fff;">
     <header style="text-align:center">
         <img src="{{ asset('hinh/banner_sach.jpg') }}" width="1000px">
@@ -96,5 +206,6 @@
             </div>
         </div>
     </main>
+
 </body>
 </html>

@@ -24,6 +24,15 @@
                 <p><span class="info-label">Tác giả:</span> <span class="info-value text-success font-weight-bold">{{ $sach->tac_gia ?? 'Chưa rõ' }}</span></p>
                 <p><span class="info-label">Hình thức bìa:</span> <span class="info-value">Bìa Mềm</span></p>
             </div>
+
+            <div class="mt-3">
+                <strong class="d-block mb-2">Giá bán: {{ number_format($sach->gia_ban, 0, ',', '.') }}đ</strong>
+                <label for="product-number" class="mb-1">Số lượng mua:</label>
+                <div class="d-flex align-items-center">
+                    <input type="number" id="product-number" class="form-control form-control-sm mr-2" min="1" value="1" style="max-width:100px;">
+                    <button class="btn btn-success btn-sm mb-0" id="add-to-cart">Thêm vào giỏ hàng</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -45,5 +54,28 @@
         .text-success { color: #008848 !important; }
         .text-justify { text-align: justify; }
     </style>
+
+    <script>
+        $(document).ready(function () {
+            $("#add-to-cart").click(function () {
+                const id = "{{ $sach->id }}";
+                const num = $("#product-number").val();
+
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "{{ route('cartadd') }}",
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        "id": id,
+                        "num": num
+                    },
+                    success: function (data) {
+                        $("#cart-number-product").html(data);
+                    }
+                });
+            });
+        });
+    </script>
 </x-booklayout>
 

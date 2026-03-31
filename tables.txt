@@ -1,0 +1,35 @@
+[
+    {
+        "Tables_in_bookdb": "cache"
+    },
+    {
+        "Tables_in_bookdb": "cache_locks"
+    },
+    {
+        "Tables_in_bookdb": "dm_the_loai"
+    },
+    {
+        "Tables_in_bookdb": "failed_jobs"
+    },
+    {
+        "Tables_in_bookdb": "job_batches"
+    },
+    {
+        "Tables_in_bookdb": "jobs"
+    },
+    {
+        "Tables_in_bookdb": "migrations"
+    },
+    {
+        "Tables_in_bookdb": "password_reset_tokens"
+    },
+    {
+        "Tables_in_bookdb": "sach"
+    },
+    {
+        "Tables_in_bookdb": "sessions"
+    },
+    {
+        "Tables_in_bookdb": "users"
+    }
+]
